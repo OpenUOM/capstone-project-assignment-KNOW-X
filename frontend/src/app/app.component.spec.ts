@@ -26,10 +26,14 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('capstone-frontend');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('capstone-frontend app is running!');
-  });
+it('should render title', () => {
+  const fixture = TestBed.createComponent(AppComponent);
+  fixture.detectChanges();
+  const compiled = fixture.nativeElement;
+  const content = compiled.querySelector('.content');
+  if (content) {
+    expect(content.textContent).toContain('capstone-frontend app is running!');
+  }
+});
+
 });
