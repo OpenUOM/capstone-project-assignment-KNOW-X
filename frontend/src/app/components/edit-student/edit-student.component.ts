@@ -22,8 +22,8 @@ export class EditStudentComponent implements OnInit {
   getStudentData() {
     const extras = this.navigation?.extras?.state;
     if (extras) {
-      const { id, name, age, hometoen } = extras;
-      const student = { id, name, age, hometoen };
+      const { id, name, age, hometown } = extras;
+      const student = { id, name, age, hometown };
       this.service.getOneStudentData(student).subscribe(
         (response) => {
           this.studentData = response[0];
