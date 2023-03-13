@@ -31,8 +31,7 @@ const readTeachers = async () => {
                 resolve(teachers);
             })
             .catch((error) => {
-                console.error("Error occurred while reading teachers: ", error);
-                reject(new Error("Failed to fetch teachers. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -46,8 +45,7 @@ const readTeacherInfo = async (id) => {
                 resolve(teacher);
             })
             .catch((error) => {
-                console.error("Error occurred while reading teacher: ", error);
-                reject(new Error("Failed to fetch teacher. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -61,8 +59,7 @@ const addTeacher = async (id, name, age) => {
                 resolve({status: "Sucessfully inserted Teacher"});
             })
             .catch((error) => {
-                console.error("Error occurred while inserting teacher: ", error);
-                reject(new Error("Failed to insert teacher. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -76,8 +73,7 @@ const updateTeacher = async (name, age, id) => {
                 resolve({status: "Successfully updated Teacher"});
             })
             .catch((error) => {
-                console.error("Error occurred while updating teacher: ", error);
-                reject(new Error("Failed to update teacher. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -91,8 +87,7 @@ const deleteTeacher = async (id) => {
                 resolve({status: "Successfully deleted Teacher"});
             })
             .catch((error) => {
-                console.error("Error occurred while deleting teacher: ", error);
-                reject(new Error("Failed to delete teacher. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -106,8 +101,7 @@ const readStudents = async () => {
                 resolve(students);
             })
             .catch((error) => {
-                console.error("Error occurred while reading students: ", error);
-                reject(new Error("Failed to fetch students. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -121,8 +115,7 @@ const readStudentInfo = async (id) => {
                 resolve(teacher);
             })
             .catch((error) => {
-                console.error("Error occurred while reading student: ", error);
-                reject(new Error("Failed to fetch student. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -136,8 +129,7 @@ const addStudent = async (id, name, age, hometown) => {
                 resolve({status: "Sucessfully inserted Student"});
             })
             .catch((error) => {
-                console.error("Error occurred while inserting student: ", error);
-                reject(new Error("Failed to add student. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -151,8 +143,7 @@ const updateStudent = async (name, age, hometown, id) => {
                 resolve({status: "Sucessfully updated Student"});
             })
             .catch((error) => {
-                console.error("Error occurred while updating student: ", error);
-                reject(new Error("Failed to update student. Please try again later."));
+                reject(error);
             });
     });
 } 
@@ -163,11 +154,10 @@ const deleteStudent = async (id) => {
         knex_db
             .raw(sql, [id])
             .then(() => {
-                resolve({status: "Sucessfully deleted Student"});
+                resolve({status: "sucessfully deleted Student"});
             })
             .catch((error) => {
-                console.error("Error occurred while deleting student: ", error);
-                reject(new Error("Failed to delete student. Please try again later."));
+                reject(error);
             });
     });
 }
@@ -182,6 +172,5 @@ module.exports = {
     readStudentInfo,
     readTeacherInfo,
     updateStudent,
-    updateTeacher,
-	dbinitialize
+    updateTeacher
 };

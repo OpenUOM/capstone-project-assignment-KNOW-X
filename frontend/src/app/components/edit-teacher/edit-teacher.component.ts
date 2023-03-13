@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AppServiceService } from '../../app-service.service';
+import { Router, NavigationExtras } from '@angular/router';
+import {AppServiceService} from '../../app-service.service';
 
 @Component({
   selector: 'app-edit-teacher',
@@ -9,43 +9,38 @@ import { AppServiceService } from '../../app-service.service';
 })
 export class EditTeacherComponent implements OnInit {
 
-  teacherData: any;
-  teacherId: string;
 
-  constructor(
-    private service: AppServiceService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) { }
+  teacherData: any;
+
+
+  constructor(private service : AppServiceService, private router: Router) { }
+
+  navigation = this.router.getCurrentNavigation();
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.teacherId = params['id'];
-      this.getTeacherData();
-    });
+    this.getTeacherData();
   }
 
-  getTeacherData() {
-    this.service.getOneTeacherData({ id: this.teacherId }).subscribe(
-      (response) => {
-        this.teacherData = response[0];
-      },
-      (error) => {
-        console.log('ERROR - ', error)
-      }
-    )
+  getTeacherData(){
+    let teacher = {
+      id : this.navigation.extras.state.id,
+      name : this.navigation.extras.state.name,
+      age : this.navigation.extras.state.age
+    }
+    this.service.getOneTeacherData(teacher).subscribe((response)=>{
+      this.teacherData = response[0];
+    },(error)=>{
+      console.log('ERROR - ', error)
+    })
   }
 
-  editTeacher(values) {
-    values.id = this.teacherId;
-    this.service.editTeacher(values).subscribe(
-      (response) => {
-        this.teacherData = response[0];
-      },
-      (error) => {
-        console.log('ERROR - ', error)
-      }
-    )
+  editTeacher(values){
+    values.id = this.navigation.extras.state.id;
+    this.service.editTeacher(values).subscribe((response)=>{
+      this.teacherData = response[0];
+    },(error)=>{
+      console.log('ERROR - ', error)
+    })
   }
 
 }
