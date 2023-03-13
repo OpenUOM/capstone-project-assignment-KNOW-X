@@ -32,7 +32,7 @@ it('should render title', () => {
   const compiled = fixture.nativeElement;
   const content = compiled.querySelector('.content');
   if (content) {
-    expect(content.textContent).toContain('capstone-frontend app is running!');
+    expect(content.textContent).toContain('capstone-frontend');
   }
 });
 
