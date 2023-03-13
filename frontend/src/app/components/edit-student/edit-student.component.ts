@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import {AppServiceService} from '../../app-service.service';
+import { Router } from '@angular/router';
+import { AppServiceService } from '../../app-service.service';
 
 @Component({
   selector: 'app-edit-student',
@@ -11,8 +11,7 @@ export class EditStudentComponent implements OnInit {
 
   studentData: any;
 
-
-  constructor(private service : AppServiceService, private router: Router) { }
+  constructor(private service: AppServiceService, private router: Router) {}
 
   navigation = this.router.getCurrentNavigation();
 
@@ -20,27 +19,38 @@ export class EditStudentComponent implements OnInit {
     this.getStudentData();
   }
 
-  getStudentData(){
-    let student = {
-      id : this.navigation.extras.state.id,
-	  name : this.navigation.extras.state.name,
-      age : this.navigation.extras.state.age,
-	  hometown : this.navigation.extras.state.hometown
+  getStudentData() {
+    const extras = this.navigation?.extras?.state;
+    if (extras) {
+      const { id, name, age, hometoen } = extras;
+      const student = { id, name, age, hometoen };
+      this.service.getOneStudentData(student).subscribe(
+        (response) => {
+          this.studentData = response[0];
+        },
+        (error) => {
+          console.log('ERROR - ', error);
+        }
+      );
+    } else {
+      console.log('ERROR - missing navigation extras');
     }
-    this.service.getOneStudentData(student).subscribe((response)=>{
-      this.studentData = response[0];
-    },(error)=>{
-      console.log('ERROR - ', error)
-    })
   }
 
-  editStudent(values){
-    values.id = this.navigation.extras.state.id;
-    this.service.editStudent(values).subscribe((response)=>{
-      this.studentData = response[0];
-    },(error)=>{
-      console.log('ERROR - ', error)
-    })
+  editStudent(values) {
+    const id = this.navigation?.extras?.state?.id;
+    if (id) {
+      values.id = id;
+      this.service.editStudent(values).subscribe(
+        (response) => {
+          this.studentData = response[0];
+        },
+        (error) => {
+          console.log('ERROR - ', error);
+        }
+      );
+    } else {
+      console.log('ERROR - missing navigation extras');
+    }
   }
-
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import {AppServiceService} from '../../app-service.service';
+import { Router } from '@angular/router';
+import { AppServiceService } from '../../app-service.service';
 
 @Component({
   selector: 'app-edit-teacher',
@@ -9,11 +9,9 @@ import {AppServiceService} from '../../app-service.service';
 })
 export class EditTeacherComponent implements OnInit {
 
-
   teacherData: any;
 
-
-  constructor(private service : AppServiceService, private router: Router) { }
+  constructor(private service: AppServiceService, private router: Router) {}
 
   navigation = this.router.getCurrentNavigation();
 
@@ -21,26 +19,38 @@ export class EditTeacherComponent implements OnInit {
     this.getTeacherData();
   }
 
-  getTeacherData(){
-    let teacher = {
-      id : this.navigation.extras.state.id,
-      name : this.navigation.extras.state.name,
-      age : this.navigation.extras.state.age
+  getTeacherData() {
+    const extras = this.navigation?.extras?.state;
+    if (extras) {
+      const { id, name, age } = extras;
+      const teacher = { id, name, age };
+      this.service.getOneTeacherData(teacher).subscribe(
+        (response) => {
+          this.teacherData = response[0];
+        },
+        (error) => {
+          console.log('ERROR - ', error);
+        }
+      );
+    } else {
+      console.log('ERROR - missing navigation extras');
     }
-    this.service.getOneTeacherData(teacher).subscribe((response)=>{
-      this.teacherData = response[0];
-    },(error)=>{
-      console.log('ERROR - ', error)
-    })
   }
 
-  editTeacher(values){
-    values.id = this.navigation.extras.state.id;
-    this.service.editTeacher(values).subscribe((response)=>{
-      this.teacherData = response[0];
-    },(error)=>{
-      console.log('ERROR - ', error)
-    })
+  editTeacher(values) {
+    const id = this.navigation?.extras?.state?.id;
+    if (id) {
+      values.id = id;
+      this.service.editTeacher(values).subscribe(
+        (response) => {
+          this.teacherData = response[0];
+        },
+        (error) => {
+          console.log('ERROR - ', error);
+        }
+      );
+    } else {
+      console.log('ERROR - missing navigation extras');
+    }
   }
-
 }
